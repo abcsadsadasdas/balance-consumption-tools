@@ -20,8 +20,16 @@ import pandas as pd
 from openpyxl.utils import get_column_letter
 
 
+# 获取 exe 或脚本的真实路径
+if getattr(sys, 'frozen', False):
+    # PyInstaller 打包后的 exe
+    EXE_DIR = Path(sys.executable).resolve().parent
+else:
+    # 直接运行 Python 脚本
+    EXE_DIR = Path(__file__).resolve().parent
+
 # 脚本所在目录（Python/消耗汇总/）
-SCRIPT_DIR = Path(__file__).parent
+SCRIPT_DIR = EXE_DIR
 # 项目根目录（py 自动化脚本/）
 PROJECT_ROOT = SCRIPT_DIR.parent.parent
 

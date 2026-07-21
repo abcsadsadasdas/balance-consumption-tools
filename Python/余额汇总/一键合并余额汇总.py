@@ -54,8 +54,16 @@ ACCOUNT_ID_COLUMN = "账户ID"
 TOTAL_BALANCE_COLUMN = "总可用余额"
 
 
+# 获取 exe 或脚本的真实路径
+if getattr(sys, 'frozen', False):
+    # PyInstaller 打包后的 exe
+    EXE_DIR = Path(sys.executable).resolve().parent
+else:
+    # 直接运行 Python 脚本
+    EXE_DIR = Path(__file__).resolve().parent
+
 # 脚本所在目录（Python/余额汇总/）
-SCRIPT_DIR = Path(__file__).resolve().parent
+SCRIPT_DIR = EXE_DIR
 # 项目根目录（脚本所在目录向上两级）
 PROJECT_ROOT = SCRIPT_DIR.parent.parent
 
