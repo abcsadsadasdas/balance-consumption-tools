@@ -31,10 +31,15 @@ jobs:
       run: |
         pyinstaller --onefile --name "consumption-merge" "Python/消耗汇总/总消耗汇总.py"
 
+    - name: Build create directory EXE
+      run: |
+        pyinstaller --onefile --name "create-directory" "Python/创建日期目录.py"
+
     - name: Rename exe files
       run: |
         Rename-Item -Path "dist/balance-merge.exe" -NewName "一键合并余额汇总.exe"
         Rename-Item -Path "dist/consumption-merge.exe" -NewName "一键合并消耗汇总.exe"
+        Rename-Item -Path "dist/create-directory.exe" -NewName "一键创建日期目录.exe"
 
     - name: Create Release
       uses: softprops/action-gh-release@v2
@@ -42,5 +47,6 @@ jobs:
         files: |
           dist/一键合并余额汇总.exe
           dist/一键合并消耗汇总.exe
+          dist/一键创建日期目录.exe
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
