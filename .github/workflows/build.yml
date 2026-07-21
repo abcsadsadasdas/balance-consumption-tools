@@ -3,37 +3,41 @@ name: Build Windows EXE
 on:
   push:
     tags:
-      - 'v*'  # 推送 v 开头的 tag 时触发，如 v1.0.0
+      - 'v*'
 
 jobs:
   build:
     runs-on: windows-latest
-    
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-    
+
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
         python-version: '3.11'
-    
+
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install pyinstaller pandas openpyxl python-calamine
-    
-    - name: Build 余额汇总 EXE
+        pip install --retries 10 --timeout 120 pyinstaller pandas openpyxl python-calamine
+
+    - name: Build balance EXE
       run: |
-        pyinstaller --onefile --name "一键合并余额汇总" "Python/余额汇总/一键合并余额汇总.py"
-    
-    - name: Build 消耗汇总 EXE
+        pyinstaller --onefile --name "balance-merge" "Python/余额汇总/一键合并余额汇总.py"
+
+    - name: Build consumption EXE
       run: |
-        pyinstaller --onefile --name "一键合并消耗汇总" "Python/消耗汇总/总消耗汇总.py"
-    
+        pyinstaller --onefile --name "consumption-merge" "Python/消耗汇总/总消耗汇总.py"
+
+    - name: Rename exe files
+      run: |
+        Rename-Item -Path "dist/balance-merge.exe" -NewName "一键合并余额汇总.exe"
+        Rename-Item -Path "dist/consumption-merge.exe" -NewName "一键合并消耗汇总.exe"
+
     - name: Create Release
-      id: create_release
-      uses: softprops/action-gh-release@v1
+      uses: softprops/action-gh-release@v2
       with:
         files: |
           dist/一键合并余额汇总.exe
