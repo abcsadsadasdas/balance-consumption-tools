@@ -48,16 +48,16 @@ from pathlib import Path
 if getattr(sys, 'frozen', False):
     # PyInstaller 打包后的 exe
     EXE_DIR = Path(sys.executable).resolve().parent
+    # 模板文件在 exe 同目录下
+    TEMPLATE_PATH = EXE_DIR / "余额导入模板.xlsx"
 else:
     # 直接运行 Python 脚本
     EXE_DIR = Path(__file__).resolve().parent
+    # 模板文件：Python/余额汇总/模板/余额导入模板.xlsx
+    TEMPLATE_PATH = EXE_DIR / "余额汇总" / "模板" / "余额导入模板.xlsx"
 
-# 脚本位于 Python/，项目根目录是其上一级
-SCRIPT_DIR = EXE_DIR
-PROJECT_ROOT = SCRIPT_DIR.parent
-
-# 模板文件：Python/余额汇总/模板/余额导入模板.xlsx
-TEMPLATE_PATH = SCRIPT_DIR / "余额汇总" / "模板" / "余额导入模板.xlsx"
+# exe 所在目录就是项目根目录，日期目录跟 exe 平级
+PROJECT_ROOT = EXE_DIR
 
 # 余额汇总平台（需要复制余额导入模板）
 BALANCE_PLATFORM_FOLDERS = [

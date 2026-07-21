@@ -28,10 +28,8 @@ else:
     # 直接运行 Python 脚本
     EXE_DIR = Path(__file__).resolve().parent
 
-# 脚本所在目录（Python/消耗汇总/）
-SCRIPT_DIR = EXE_DIR
-# 项目根目录（py 自动化脚本/）
-PROJECT_ROOT = SCRIPT_DIR.parent.parent
+# exe 所在目录就是项目根目录，日期目录跟 exe 平级
+PROJECT_ROOT = EXE_DIR
 
 # 各平台配置: (目录名, 平台显示名)
 PLATFORM_CONFIG = [

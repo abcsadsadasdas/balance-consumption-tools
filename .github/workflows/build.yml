@@ -37,6 +37,10 @@ jobs:
       run: |
         pyinstaller --onefile --name "create-directory" "Python/创建日期目录.py"
 
+    - name: Copy template file
+      run: |
+        Copy-Item -Path "Python/余额汇总/模板/余额导入模板.xlsx" -Destination "dist/余额导入模板.xlsx"
+
     - name: List dist files
       run: |
         dir dist\
@@ -48,5 +52,6 @@ jobs:
           dist/balance-merge.exe
           dist/consumption-merge.exe
           dist/create-directory.exe
+          dist/余额导入模板.xlsx
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
