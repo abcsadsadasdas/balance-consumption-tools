@@ -665,4 +665,9 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception as e:
+        print(f"\n❌ 发生错误: {e}")
+    finally:
+        input("\n按回车键退出...")
