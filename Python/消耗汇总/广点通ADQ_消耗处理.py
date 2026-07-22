@@ -193,14 +193,14 @@ def main():
     if not date_dir.is_dir():
         print(f"❌ 未找到日期目录: {date_dir}")
         print("   请先运行 创建日期目录.py 创建目录结构，再放入原始文件。")
-        sys.exit(1)
+        raise RuntimeError("脚本执行失败")
 
     raw_dir = date_dir / "原始文件" / PLATFORM_NAME
     output_dir = date_dir / "生成文件" / PLATFORM_NAME
 
     if not raw_dir.is_dir():
         print(f"❌ 未找到原始文件目录: {raw_dir}")
-        sys.exit(1)
+        raise RuntimeError("脚本执行失败")
 
     output_dir.mkdir(parents=True, exist_ok=True)
 
@@ -208,7 +208,7 @@ def main():
     xlsx_files = [f for f in raw_dir.glob("*.xlsx") if not f.name.startswith('~$') and not f.name.startswith('.~')]
     if not xlsx_files:
         print(f"❌ 在 {raw_dir} 下未找到xlsx文件")
-        sys.exit(1)
+        raise RuntimeError("脚本执行失败")
 
     # 如果有多个文件，合并读取
     if len(xlsx_files) == 1:
@@ -245,7 +245,7 @@ def main():
                  f"❌ 处理失败", f"  原因: {e}", "", "详细堆栈:", error_msg]
         log_path.write_text("\n".join(lines), encoding="utf-8")
         print(f"⚠️  失败日志已保存: {log_path}")
-        sys.exit(1)
+        raise RuntimeError("脚本执行失败")
 
 
 if __name__ == "__main__":

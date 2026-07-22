@@ -226,13 +226,13 @@ def main():
     if not date_dir.is_dir():
         print(f"❌ 未找到日期目录: {date_dir}")
         print("   请先运行 创建日期目录.py 创建目录结构，再放入原始文件。")
-        sys.exit(1)
+        raise RuntimeError("脚本执行失败")
 
     # 确定要处理哪些平台
     target_platform = sys.argv[2] if len(sys.argv) > 2 else None
     if target_platform and target_platform not in PLATFORMS:
         print(f"❌ 未知平台: {target_platform}，支持: {list(PLATFORMS.keys())}")
-        sys.exit(1)
+        raise RuntimeError("脚本执行失败")
 
     platforms_to_process = [target_platform] if target_platform else list(PLATFORMS.keys())
 

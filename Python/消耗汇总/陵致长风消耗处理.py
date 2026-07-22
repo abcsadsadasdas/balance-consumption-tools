@@ -168,7 +168,7 @@ def main():
 
     if not date_dir.is_dir():
         print(f"❌ 未找到日期目录: {date_dir}")
-        sys.exit(1)
+        raise RuntimeError("脚本执行失败")
 
     print(f"📅 日期: {date_str}")
     print(f"📂 目录: {date_dir}")

@@ -168,19 +168,19 @@ def main():
 
     if not date_dir.is_dir():
         print(f"❌ 未找到日期目录: {date_dir}")
-        sys.exit(1)
+        raise RuntimeError("脚本执行失败")
 
     raw_dir = date_dir / "原始文件" / PLATFORM_NAME
     output_dir = date_dir / "生成文件" / PLATFORM_NAME
 
     if not raw_dir.is_dir():
         print(f"❌ 未找到原始文件目录: {raw_dir}")
-        sys.exit(1)
+        raise RuntimeError("脚本执行失败")
 
     has_files = any(raw_dir.glob("*.csv")) or any(raw_dir.glob("*.xlsx"))
     if not has_files:
         print(f"❌ 目录为空: {raw_dir}")
-        sys.exit(1)
+        raise RuntimeError("脚本执行失败")
 
     output_dir.mkdir(parents=True, exist_ok=True)
 
@@ -201,7 +201,7 @@ def main():
                  f"❌ 处理失败", f"  原因: {e}", "", "详细堆栈:", error_msg]
         log_path.write_text("\n".join(lines), encoding="utf-8")
         print(f"⚠️  失败日志已保存: {log_path}")
-        sys.exit(1)
+        raise RuntimeError("脚本执行失败")
 
 
 if __name__ == "__main__":

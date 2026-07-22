@@ -218,7 +218,7 @@ def main():
     if not date_dir.is_dir():
         print(f"❌ 未找到日期目录: {date_dir}")
         print("   请先运行 创建日期目录.py 创建目录结构，再放入原始文件。")
-        sys.exit(1)
+        raise RuntimeError("脚本执行失败")
 
     print(f"📅 日期: {date_str}")
     print(f"📂 目录: {date_dir}")
