@@ -84,23 +84,7 @@ jobs:
         GITHUB_REF_NAME: ${{ github.ref_name }}
 
     - name: Create Release
-      run: |
-        gh release create "$GITHUB_REF_NAME" `
-          "dist/balance-merge.exe" `
-          "dist/consumption-merge.exe" `
-          "dist/all-consumption.exe" `
-          "dist/create-directory.exe" `
-          "dist/余额导入模板.xlsx" `
-          "dist/回填数据导入模板_快手.xlsx" `
-          "dist/回填数据导入模板_头条.xlsx" `
-          "dist/回填数据导入模板_广点通.xlsx" `
-          "dist/回填数据导入模板_广点通 copy.xlsx" `
-          "dist/回填数据导入模板_支付宝.xlsx" `
-          "dist/回填数据导入模板_B站-信息流.xlsx" `
-          "dist/回填数据导入模板_其他.xlsx" `
-          --title "$GITHUB_REF_NAME" `
-          --generate-notes
-      shell: cmd
+      run: gh release create "$GITHUB_REF_NAME" "dist/balance-merge.exe" "dist/consumption-merge.exe" "dist/all-consumption.exe" "dist/create-directory.exe" "dist/余额导入模板.xlsx" "dist/回填数据导入模板_快手.xlsx" "dist/回填数据导入模板_头条.xlsx" "dist/回填数据导入模板_广点通.xlsx" "dist/回填数据导入模板_广点通 copy.xlsx" "dist/回填数据导入模板_支付宝.xlsx" "dist/回填数据导入模板_B站-信息流.xlsx" "dist/回填数据导入模板_其他.xlsx" --title "$GITHUB_REF_NAME" --generate-notes
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         GITHUB_REF_NAME: ${{ github.ref_name }}
