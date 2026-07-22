@@ -22,6 +22,15 @@ import sys
 from pathlib import Path
 from datetime import datetime
 
+# 显式导入所有平台脚本，让 PyInstaller 能检测到依赖
+import 快手消耗处理
+import 金牛消耗处理
+import 抖音千川消耗处理
+import 陵致长风消耗处理
+import 广点通ADQ_消耗处理
+import 支付宝消耗处理
+import B站消耗处理
+
 # 获取 exe 或脚本的真实路径
 if getattr(sys, 'frozen', False):
     # PyInstaller 打包后的 exe：exe 所在目录就是项目根目录
@@ -32,8 +41,9 @@ else:
     SCRIPT_DIR = Path(__file__).resolve().parent
     PROJECT_ROOT = SCRIPT_DIR.parent.parent
 
-# 将脚本目录添加到 sys.path，以便 import 其他脚本
-sys.path.insert(0, str(SCRIPT_DIR))
+# 设置环境变量，让被导入的平台脚本能找到 exe 目录
+import os
+os.environ['_EXE_DIR'] = str(SCRIPT_DIR)
 
 
 def get_target_date_str():
@@ -60,29 +70,26 @@ def main():
         print(f"❌ 未找到日期目录: {date_dir}")
         sys.exit(1)
     
-    # 导入并运行各平台脚本
+    # 各平台脚本映射
     scripts = [
-        ("快手消耗处理", "快手消耗处理"),
-        ("金牛消耗处理", "金牛消耗处理"),
-        ("抖音千川消耗处理", "抖音千川消耗处理"),
-        ("陵致长风消耗处理", "陵致长风消耗处理"),
-        ("广点通ADQ_消耗处理", "广点通ADQ消耗处理"),
-        ("支付宝消耗处理", "支付宝消耗处理"),
-        ("B站消耗处理", "B站消耗处理"),
+        (快手消耗处理, "快手消耗处理"),
+        (金牛消耗处理, "金牛消耗处理"),
+        (抖音千川消耗处理, "抖音千川消耗处理"),
+        (陵致长风消耗处理, "陵致长风消耗处理"),
+        (广点通ADQ_消耗处理, "广点通ADQ消耗处理"),
+        (支付宝消耗处理, "支付宝消耗处理"),
+        (B站消耗处理, "B站消耗处理"),
     ]
     
     success_count = 0
     fail_count = 0
     
-    for idx, (module_name, display_name) in enumerate(scripts, 1):
+    for idx, (module, display_name) in enumerate(scripts, 1):
         print(f"【{idx}/{len(scripts)}】{display_name}...")
         try:
-            # 动态导入模块
-            module = __import__(module_name)
-            
             # 设置 sys.argv 为 [脚本名, 日期]
             old_argv = sys.argv.copy()
-            sys.argv = [module_name, date_str]
+            sys.argv = [display_name, date_str]
             
             try:
                 # 调用 main 函数

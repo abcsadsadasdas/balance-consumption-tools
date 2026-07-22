@@ -36,13 +36,16 @@ jobs:
     - name: Build all-consumption EXE
       run: |
         pyinstaller --onefile --name "all-consumption" `
-          --add-data "Python\消耗汇总\快手消耗处理.py;." `
-          --add-data "Python\消耗汇总\金牛消耗处理.py;." `
-          --add-data "Python\消耗汇总\抖音千川消耗处理.py;." `
-          --add-data "Python\消耗汇总\陵致长风消耗处理.py;." `
-          --add-data "Python\消耗汇总\广点通ADQ_消耗处理.py;." `
-          --add-data "Python\消耗汇总\支付宝消耗处理.py;." `
-          --add-data "Python\消耗汇总\B站消耗处理.py;." `
+          --hidden-import pandas `
+          --hidden-import openpyxl `
+          --hidden-import calamine `
+          --hidden-import 快手消耗处理 `
+          --hidden-import 金牛消耗处理 `
+          --hidden-import 抖音千川消耗处理 `
+          --hidden-import 陵致长风消耗处理 `
+          --hidden-import 广点通ADQ_消耗处理 `
+          --hidden-import 支付宝消耗处理 `
+          --hidden-import B站消耗处理 `
           --add-data "Python\消耗汇总\回填数据导入模板_快手.xlsx;." `
           --add-data "Python\消耗汇总\回填数据导入模板_头条.xlsx;." `
           --add-data "Python\消耗汇总\回填数据导入模板_广点通.xlsx;." `
