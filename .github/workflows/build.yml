@@ -76,12 +76,20 @@ jobs:
 
     - name: Delete existing release
       run: |
-        gh release delete "$GITHUB_REF_NAME" --yes --cleanup-tags 2>nul
-        exit /b 0
-      shell: cmd
+        $tag = "${{ github.ref_name }}"
+        $release = gh release view $tag 2>$null
+        if ($release) {
+          gh release delete $tag --yes --cleanup-tags 2>$null
+          Start-Sleep -Seconds 2
+        }
+        $tagRef = git ls-remote --tags origin $tag 2>$null
+        if ($tagRef) {
+          git push origin :refs/tags/$tag 2>$null
+        }
+        Write-Host "Cleaned up existing release: $tag"
+      shell: pwsh
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        GITHUB_REF_NAME: ${{ github.ref_name }}
 
     - name: Create Release
       run: gh release create "${{ github.ref_name }}" "dist/balance-merge.exe" "dist/consumption-merge.exe" "dist/all-consumption.exe" "dist/create-directory.exe" "dist/余额导入模板.xlsx" "dist/回填数据导入模板_快手.xlsx" "dist/回填数据导入模板_头条.xlsx" "dist/回填数据导入模板_广点通.xlsx" "dist/回填数据导入模板_广点通 copy.xlsx" "dist/回填数据导入模板_支付宝.xlsx" "dist/回填数据导入模板_B站-信息流.xlsx" "dist/回填数据导入模板_其他.xlsx" --title "${{ github.ref_name }}" --generate-notes
