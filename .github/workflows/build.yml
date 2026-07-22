@@ -49,6 +49,7 @@ jobs:
           --add-data "Python\消耗汇总\回填数据导入模板_快手.xlsx;." `
           --add-data "Python\消耗汇总\回填数据导入模板_头条.xlsx;." `
           --add-data "Python\消耗汇总\回填数据导入模板_广点通.xlsx;." `
+          --add-data "Python\消耗汇总\回填数据导入模板_广点通 copy.xlsx;." `
           --add-data "Python\消耗汇总\回填数据导入模板_支付宝.xlsx;." `
           --add-data "Python\消耗汇总\回填数据导入模板_B站-信息流.xlsx;." `
           --add-data "Python\消耗汇总\回填数据导入模板_其他.xlsx;." `
@@ -58,9 +59,16 @@ jobs:
       run: |
         pyinstaller --onefile --name "create-directory" "Python\创建日期目录.py"
 
-    - name: Copy template file
+    - name: Copy template files
       run: |
         Copy-Item -Path "Python\余额汇总\模板\余额导入模板.xlsx" -Destination "dist\余额导入模板.xlsx"
+        Copy-Item -Path "Python\消耗汇总\回填数据导入模板_快手.xlsx" -Destination "dist\"
+        Copy-Item -Path "Python\消耗汇总\回填数据导入模板_头条.xlsx" -Destination "dist\"
+        Copy-Item -Path "Python\消耗汇总\回填数据导入模板_广点通.xlsx" -Destination "dist\"
+        Copy-Item -Path "Python\消耗汇总\回填数据导入模板_广点通 copy.xlsx" -Destination "dist\"
+        Copy-Item -Path "Python\消耗汇总\回填数据导入模板_支付宝.xlsx" -Destination "dist\"
+        Copy-Item -Path "Python\消耗汇总\回填数据导入模板_B站-信息流.xlsx" -Destination "dist\"
+        Copy-Item -Path "Python\消耗汇总\回填数据导入模板_其他.xlsx" -Destination "dist\"
 
     - name: List dist files
       run: |
@@ -75,5 +83,12 @@ jobs:
           dist/all-consumption.exe
           dist/create-directory.exe
           dist/余额导入模板.xlsx
+          dist/回填数据导入模板_快手.xlsx
+          dist/回填数据导入模板_头条.xlsx
+          dist/回填数据导入模板_广点通.xlsx
+          dist/回填数据导入模板_广点通 copy.xlsx
+          dist/回填数据导入模板_支付宝.xlsx
+          dist/回填数据导入模板_B站-信息流.xlsx
+          dist/回填数据导入模板_其他.xlsx
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

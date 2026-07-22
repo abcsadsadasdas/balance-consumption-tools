@@ -117,5 +117,13 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
-    input("\n按回车键退出...")
+    try:
+        main()
+    except SystemExit:
+        pass
+    except Exception as e:
+        print(f"\n❌ 程序异常: {e}")
+        import traceback
+        traceback.print_exc()
+    finally:
+        input("\n按回车键退出...")
