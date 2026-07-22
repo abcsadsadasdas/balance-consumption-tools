@@ -54,7 +54,7 @@ PLATFORM_CONFIG = [
 
 def find_backfill_file(output_dir: Path):
     """查找回填结果文件"""
-    patterns = ["*回填结果*.xlsx", "*回填*.xlsx"]
+    patterns = ["*回填结果*.xlsx", "*回填*.xlsx", "*财务日结报表*.xlsx", "*客户财务*.xlsx"]
     for pattern in patterns:
         files = [f for f in output_dir.glob(pattern) if not f.name.startswith('~$')]
         if files:
@@ -68,13 +68,34 @@ def get_target_date_str():
     return datetime.now().strftime("%Y-%m-%d")
 
 
+def find_date_dir(date_str):
+    """查找日期目录，兼容 EXE 放在项目根目录或 tools 子目录。"""
+    candidate_roots = [PROJECT_ROOT]
+    if getattr(sys, 'frozen', False):
+        candidate_roots.append(PROJECT_ROOT.parent)
+
+    for root in candidate_roots:
+        date_dir = root / date_str
+        if date_dir.is_dir():
+            return date_dir, candidate_roots
+
+    return None, candidate_roots
+
+
 def main():
     date_str = get_target_date_str()
-    date_dir = PROJECT_ROOT / date_str
+    date_dir, candidate_roots = find_date_dir(date_str)
 
-    if not date_dir.is_dir():
-        print(f"❌ 未找到日期目录: {date_dir}")
-        sys.exit(1)
+    if date_dir is None:
+        checked_paths = "\n".join(
+            f"  - {root / date_str}" for root in candidate_roots
+        )
+        print(
+            "❌ 未找到日期目录，已检查以下位置：\n"
+            f"{checked_paths}\n\n"
+            "请先运行创建日期目录工具，并将 EXE 放在项目根目录或 tools 目录中。"
+        )
+        return 1
 
     print(f"📅 日期: {date_str}")
     print(f"📂 目录: {date_dir}")
@@ -194,11 +215,29 @@ def main():
             line += f"{row[c]:>14,.3f}"
         print(line)
 
+    return 0
+
+
+def pause_before_exit():
+    """仅在交互式控制台中暂停，避免无 stdin 时误报 EOFError。"""
+    if sys.stdin is None or not sys.stdin.isatty():
+        return
+
+    try:
+        input("\n按回车键退出...")
+    except (EOFError, OSError):
+        pass
+
+
+def run():
+    try:
+        return main()
+    except Exception as exc:
+        print(f"\n❌ 发生错误: {exc}")
+        return 1
+    finally:
+        pause_before_exit()
+
 
 if __name__ == "__main__":
-    try:
-        main()
-    except Exception as e:
-        print(f"\n❌ 发生错误: {e}")
-    finally:
-        input("\n按回车键退出...")
+    sys.exit(run())
