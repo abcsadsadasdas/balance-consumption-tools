@@ -77,14 +77,14 @@ jobs:
     - name: Delete existing release
       run: |
         $tag = "${{ github.ref_name }}"
-        $releaseExists = gh release view $tag 2>$null
-        if ($releaseExists) {
-          gh release delete $tag --yes 2>$null
-          Start-Sleep -Seconds 2
-          Write-Host "Deleted existing release: $tag"
-        } else {
-          Write-Host "No existing release for: $tag"
+        Write-Host "Attempting to delete release: $tag"
+        gh release delete $tag --yes 2>&1 | ForEach-Object { Write-Host $_ }
+        $check = gh release view $tag 2>&1
+        if ($LASTEXITCODE -eq 0) {
+          Write-Host "WARNING: Release still exists after delete attempt!"
+          exit 1
         }
+        Write-Host "Release deleted successfully (or did not exist)"
         exit 0
       shell: pwsh
       env:
