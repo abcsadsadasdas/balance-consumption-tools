@@ -21,9 +21,14 @@ import pandas as pd
 
 
 # 脚本所在目录（Python/消耗汇总/）
-SCRIPT_DIR = Path(__file__).parent
-# 项目根目录（py 自动化脚本/）
-PROJECT_ROOT = SCRIPT_DIR.parent.parent
+import os as _os
+_exe_dir = _os.environ.get('_EXE_DIR')
+if _exe_dir:
+    SCRIPT_DIR = Path(_exe_dir)
+    PROJECT_ROOT = Path(_os.environ.get('_PROJECT_ROOT', SCRIPT_DIR))
+else:
+    SCRIPT_DIR = Path(__file__).parent
+    PROJECT_ROOT = SCRIPT_DIR.parent.parent
 
 PLATFORM_NAME = "支付宝- 消耗"
 
