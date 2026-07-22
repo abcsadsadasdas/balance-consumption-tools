@@ -30,15 +30,7 @@ dist/
 # Logs
 *.log
 
-# Data files (xlsx, zip, txt)
-*.xlsx
-*.zip
-*.txt
-*.csv
-
-# Date directories (2026-07-22/, etc.)
+# Data files (xlsx, zip, txt, csv) - 排除日期目录下的数据文件，但保留模板文件
 2026-*/
 Python/2026-*/
-
-# Tools directory (exe files)
 tools/

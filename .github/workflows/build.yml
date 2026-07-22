@@ -27,23 +27,37 @@ jobs:
 
     - name: Build balance EXE
       run: |
-        pyinstaller --onefile --name "balance-merge" "Python/余额汇总/一键合并余额汇总.py"
+        pyinstaller --onefile --name "balance-merge" "Python\余额汇总\一键合并余额汇总.py"
 
     - name: Build consumption EXE
       run: |
-        pyinstaller --onefile --name "consumption-merge" "Python/消耗汇总/总消耗汇总.py"
+        pyinstaller --onefile --name "consumption-merge" "Python\消耗汇总\总消耗汇总.py"
 
     - name: Build all-consumption EXE
       run: |
-        pyinstaller --onefile --name "all-consumption" --add-data "Python/消耗汇总/快手消耗处理.py;." --add-data "Python/消耗汇总/金牛消耗处理.py;." --add-data "Python/消耗汇总/抖音千川消耗处理.py;." --add-data "Python/消耗汇总/陵致长风消耗处理.py;." --add-data "Python/消耗汇总/广点通ADQ_消耗处理.py;." --add-data "Python/消耗汇总/支付宝消耗处理.py;." --add-data "Python/消耗汇总/B站消耗处理.py;." --add-data "Python/消耗汇总/回填数据导入模板_快手.xlsx;." --add-data "Python/消耗汇总/回填数据导入模板_头条.xlsx;." --add-data "Python/消耗汇总/回填数据导入模板_广点通.xlsx;." --add-data "Python/消耗汇总/回填数据导入模板_支付宝.xlsx;." --add-data "Python/消耗汇总/回填数据导入模板_B站-信息流.xlsx;." --add-data "Python/消耗汇总/回填数据导入模板_其他.xlsx;." "Python/消耗汇总/一键运行全部消耗.py"
+        pyinstaller --onefile --name "all-consumption" `
+          --add-data "Python\消耗汇总\快手消耗处理.py;." `
+          --add-data "Python\消耗汇总\金牛消耗处理.py;." `
+          --add-data "Python\消耗汇总\抖音千川消耗处理.py;." `
+          --add-data "Python\消耗汇总\陵致长风消耗处理.py;." `
+          --add-data "Python\消耗汇总\广点通ADQ_消耗处理.py;." `
+          --add-data "Python\消耗汇总\支付宝消耗处理.py;." `
+          --add-data "Python\消耗汇总\B站消耗处理.py;." `
+          --add-data "Python\消耗汇总\回填数据导入模板_快手.xlsx;." `
+          --add-data "Python\消耗汇总\回填数据导入模板_头条.xlsx;." `
+          --add-data "Python\消耗汇总\回填数据导入模板_广点通.xlsx;." `
+          --add-data "Python\消耗汇总\回填数据导入模板_支付宝.xlsx;." `
+          --add-data "Python\消耗汇总\回填数据导入模板_B站-信息流.xlsx;." `
+          --add-data "Python\消耗汇总\回填数据导入模板_其他.xlsx;." `
+          "Python\消耗汇总\一键运行全部消耗.py"
 
     - name: Build create directory EXE
       run: |
-        pyinstaller --onefile --name "create-directory" "Python/创建日期目录.py"
+        pyinstaller --onefile --name "create-directory" "Python\创建日期目录.py"
 
     - name: Copy template file
       run: |
-        Copy-Item -Path "Python/余额汇总/模板/余额导入模板.xlsx" -Destination "dist/余额导入模板.xlsx"
+        Copy-Item -Path "Python\余额汇总\模板\余额导入模板.xlsx" -Destination "dist\余额导入模板.xlsx"
 
     - name: List dist files
       run: |
