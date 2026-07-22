@@ -85,6 +85,7 @@ jobs:
         } else {
           Write-Host "No existing release for: $tag"
         }
+        exit 0
       shell: pwsh
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
