@@ -74,23 +74,35 @@ jobs:
       run: |
         dir dist\
 
-    - name: Delete existing release
+    - name: Create or Update Release
       run: |
         $tag = "${{ github.ref_name }}"
-        Write-Host "Attempting to delete release: $tag"
-        gh release delete $tag --yes 2>&1 | ForEach-Object { Write-Host $_ }
-        $check = gh release view $tag 2>&1
+        $files = @(
+          "dist/balance-merge.exe",
+          "dist/consumption-merge.exe",
+          "dist/all-consumption.exe",
+          "dist/create-directory.exe",
+          "dist/余额导入模板.xlsx",
+          "dist/回填数据导入模板_快手.xlsx",
+          "dist/回填数据导入模板_头条.xlsx",
+          "dist/回填数据导入模板_广点通.xlsx",
+          "dist/回填数据导入模板_广点通 copy.xlsx",
+          "dist/回填数据导入模板_支付宝.xlsx",
+          "dist/回填数据导入模板_B站-信息流.xlsx",
+          "dist/回填数据导入模板_其他.xlsx"
+        )
+        
+        # Check if release already exists
+        $exists = gh release view $tag 2>$null
         if ($LASTEXITCODE -eq 0) {
-          Write-Host "WARNING: Release still exists after delete attempt!"
-          exit 1
+          Write-Host "Release exists, uploading files with --clobber..."
+          foreach ($file in $files) {
+            gh release upload $tag $file --clobber
+          }
+        } else {
+          Write-Host "Release does not exist, creating new one..."
+          gh release create $tag @files --title $tag --generate-notes
         }
-        Write-Host "Release deleted successfully (or did not exist)"
-        exit 0
       shell: pwsh
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Create Release
-      run: gh release create "${{ github.ref_name }}" "dist/balance-merge.exe" "dist/consumption-merge.exe" "dist/all-consumption.exe" "dist/create-directory.exe" "dist/余额导入模板.xlsx" "dist/回填数据导入模板_快手.xlsx" "dist/回填数据导入模板_头条.xlsx" "dist/回填数据导入模板_广点通.xlsx" "dist/回填数据导入模板_广点通 copy.xlsx" "dist/回填数据导入模板_支付宝.xlsx" "dist/回填数据导入模板_B站-信息流.xlsx" "dist/回填数据导入模板_其他.xlsx" --title "${{ github.ref_name }}" --generate-notes
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
