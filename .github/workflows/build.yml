@@ -77,6 +77,7 @@ jobs:
     - name: Create Release
       uses: softprops/action-gh-release@v2
       with:
+        overwrite_files: true
         files: |
           dist/balance-merge.exe
           dist/consumption-merge.exe
