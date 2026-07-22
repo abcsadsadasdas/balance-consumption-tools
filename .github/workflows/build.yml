@@ -76,7 +76,9 @@ jobs:
 
     - name: Delete existing release
       run: |
-        gh release delete "$GITHUB_REF_NAME" --yes --cleanup-tags 2>/dev/null || true
+        gh release delete "$GITHUB_REF_NAME" --yes --cleanup-tags 2>nul
+        exit /b 0
+      shell: cmd
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         GITHUB_REF_NAME: ${{ github.ref_name }}
