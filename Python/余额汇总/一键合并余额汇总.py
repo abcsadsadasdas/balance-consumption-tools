@@ -56,14 +56,11 @@ TOTAL_BALANCE_COLUMN = "总可用余额"
 
 # 获取 exe 或脚本的真实路径
 if getattr(sys, 'frozen', False):
-    # PyInstaller 打包后的 exe
-    EXE_DIR = Path(sys.executable).resolve().parent
+    # PyInstaller 打包后的 exe：exe 所在目录就是项目根目录
+    PROJECT_ROOT = Path(sys.executable).resolve().parent
 else:
-    # 直接运行 Python 脚本
-    EXE_DIR = Path(__file__).resolve().parent
-
-# exe 所在目录就是项目根目录，日期目录跟 exe 平级
-PROJECT_ROOT = EXE_DIR
+    # 直接运行 Python 脚本：脚本在 Python/余额汇总/ 下，向上两级是项目根目录
+    PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 
 
 # ============================================================
